@@ -1,0 +1,145 @@
+// Mesosphere Colorscheme
+// MESOSPHERE_HELIOTROPE     #9351E5
+// MESOSPHERE_SPACE_GRAY     #323A4E
+// MESOSPHERE_MERCURY_PINK   #EF468B
+// MESOSPHERE_VENUS_YELLOW   #FEDF57
+// MESOSPHERE_EARTH_BLUE     #2F81F7
+// MESOSPHERE_MARS_RED       #FC4661
+// MESOSPHERE_JUPYTER_ORANGE #2F81F7
+// MESOSPHERE_SATURN_ORCHID  #C043D7
+// MESOSPHERE_URANUS_GREEN   #27C97B
+// MESOSPHERE_NEPTUNE_CYAN   #20D5FF
+
+digraph G {
+  graph [
+    bgcolor="transparent"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    label="PKI Certificate Infrastructure"
+    nodesep="0.5"
+    // ranksep="0.75"
+    // rankdir="LR"
+    // splines=ortho
+  ]
+
+  node [
+    color="#323a4e"
+    fillcolor="#9351e5:#ef468b"
+    fontcolor="white"
+    fontname="Source Sans Pro"
+    shape="box"
+    style="rounded,filled"
+  ]
+
+  edge [
+    color="#323a4e"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    arrowhead="vee"
+    arrowtail="vee"
+  ]
+
+  # Nodes
+  ROOT_CA [label="example.com Root CA"]
+
+  # Custom Nodes
+  I_CA_1 [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="svr.example.com\nIntermediate CA"
+    style="dotted,filled"
+  ]
+
+  I_CA_2 [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="app.example.com\nIntermediate CA"
+    style="dotted,filled"
+  ]
+
+  I_CA_1_1 [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="us.svr.example.com\nIntermediate CA"
+    style="dotted,filled"
+  ]
+
+  I_CA_1_2 [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="emea.svr.example.com\nIntermediate CA"
+    style="dotted,filled"
+  ]
+
+  L_US_SVR_1 [
+    fillcolor="#C043D7"
+    label="mesos-01.us.svr.example.com"
+    shape="plain"
+    
+  ]
+
+  L_US_SVR_2 [
+    fillcolor="#C043D7"
+    label="mesos-02.us.svr.example.com"
+    shape="plain"
+    
+  ]
+
+  L_EMEA_SVR_1 [
+    fillcolor="#C043D7"
+    label="mesos-01.emea.svr.example.com"
+    shape="plain"
+    
+  ]
+
+  L_EMEA_SVR_2 [
+    fillcolor="#C043D7"
+    label="mesos-02.emea.svr.example.com"
+    shape="plain"
+    
+  ]
+
+  L_APP_1[
+    fillcolor="#C043D7"
+    label="eng.app.example.com"
+    shape="plain"
+    
+  ]
+
+  L_APP_2[
+    fillcolor="#C043D7"
+    label="prod.app.example.com"
+    shape="plain"
+    
+  ]
+
+  subgraph cluster_server {
+      color="#27C97B"
+      fillcolor="#27C97B"
+      label="Servers"
+      style="dashed,filled"
+      I_CA_1
+      I_CA_1_1
+      I_CA_1_2
+  }
+
+  subgraph cluster_app {
+      color="#20D5FF"
+      fillcolor="#20D5FF"
+      label="Apps"
+      style="dashed,filled"
+      I_CA_2
+  }
+
+  # Edges
+  ROOT_CA -> {I_CA_1, I_CA_2}
+  I_CA_1 -> {I_CA_1_1, I_CA_1_2}
+  I_CA_2 -> {L_APP_1, L_APP_2}
+  I_CA_1_1 -> {L_US_SVR_1, L_US_SVR_2}
+  I_CA_1_2 -> {L_EMEA_SVR_1, L_EMEA_SVR_2}
+
+  # Layout tweaks
+  // {rank=same; ROOT_CA}
+  // {rank=same; I_CA_1, I_CA_2}
+  // {rank=same; I_CA_1_1, I_CA_1_2}
+}

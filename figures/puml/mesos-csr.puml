@@ -1,0 +1,27 @@
+@startuml
+
+!includeurl https://raw.githubusercontent.com/vishnu2kmohan/puml/master/ipuml/Mesosphere.ipuml
+
+title Mesos TLS Certificate Generation
+hide footbox
+' To print on US Letter, uncomment the scale directive
+'scale 1056*816
+
+participant M as "Mesos Master\nor Agent"
+participant CA_API as "Certificate Authority\nAPI"
+
+activate M
+M -> M: Generate RSA Keypair
+M -> M: Generate CSR
+activate CA_API
+M -> CA_API : Sign CSR
+CA_API -> CA_API : Validate Request
+alt Valid Request
+    CA_API -> M : Signed Certificate
+else Invalid Request
+    CA_API -> M : Error
+end
+deactivate CA_API
+deactivate M
+
+@enduml

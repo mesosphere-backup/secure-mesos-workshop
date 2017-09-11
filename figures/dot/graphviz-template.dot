@@ -1,0 +1,203 @@
+// Mesosphere Colorscheme
+// MESOSPHERE_HELIOTROPE     #9351E5
+// MESOSPHERE_SPACE_GRAY     #323A4E
+// MESOSPHERE_MERCURY_PINK   #EF468B
+// MESOSPHERE_VENUS_YELLOW   #FEDF57
+// MESOSPHERE_EARTH_BLUE     #2F81F7
+// MESOSPHERE_MARS_RED       #FC4661
+// MESOSPHERE_JUPYTER_ORANGE #2F81F7
+// MESOSPHERE_SATURN_ORCHID  #C043D7
+// MESOSPHERE_URANUS_GREEN   #27C97B
+// MESOSPHERE_NEPTUNE_CYAN   #20D5FF
+
+digraph G {
+  graph [
+    bgcolor="transparent"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    label="FIXME"
+    nodesep="0.5"
+    // ranksep="0.75"
+    // rankdir="LR"
+    // splines=ortho
+  ]
+
+  node [
+    color="#323a4e"
+    fillcolor="#9351e5:#ef468b"
+    fontcolor="white"
+    fontname="Source Sans Pro"
+    shape="box"
+    style="rounded,filled"
+  ]
+
+  edge [
+    color="#323a4e"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    arrowhead="vee"
+    arrowtail="vee"
+  ]
+
+  # Nodes
+  FOO [label="Operator(s)"]
+  BAR [label="Developer(s)"]
+  BAZ [label="User(s)"]
+
+  # Custom Nodes
+  BAR_FW_FW [
+    fillcolor="#FC4661"
+    label="-- Firewall --"
+    shape="plain"
+  ]
+
+  BAR_FW_LB [
+    fillcolor="#2F81F7"
+    label="-- Load Balancer --"
+    shape="plain"
+  ]
+
+  MM_MA_FW [
+    fillcolor="#FC4661"
+    label="-- Firewall --"
+    shape="plain"
+  ]
+
+  MM_MA_LB [
+    fillcolor="#2F81F7"
+    label="-- Load Balancer --"
+    shape="plain"
+  ]
+
+  BAZ_MPA_FW [
+    fillcolor="#FC4661"
+    label="-- Firewall --"
+    shape="plain"
+  ]
+
+  BAZ_MPA_LB [
+    fillcolor="#2F81F7"
+    label="-- Load Blancer --"
+    shape="plain"
+  ]
+
+  # Structured Tables Nodes
+  FW [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td colspan="2">Framework</td>
+        </tr>
+        <tr>
+          <td port="fw_8080">8080</td>
+          <td port="fw_8443">8443</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  MM [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td colspan="2">Master(s)</td>
+        </tr>
+        <tr>
+          <td port="mm_2181">2181</td>
+          <td port="mm_5050">5050</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  MA [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td>Private Agent(s)</td>
+        </tr>
+        <tr>
+          <td port="ma_5051">5051</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  MPA [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td colspan="2">Public Agent(s)</td>
+        </tr>
+        <tr>
+          <td colspan="2" port="mpa_5051">5051</td>
+        </tr>
+        <tr>
+          <td port="mpa_80">80</td>
+          <td port="mpa_443">443</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  # Clusters
+  subgraph cluster_developer {
+      color="#20D5FF"
+      fillcolor="#20D5FF"
+      label="Framework Developers"
+      style="dashed,filled"
+      BAR
+      BAR_FW_FW
+      BAR_FW_LB
+      FW
+  }
+
+  subgraph cluster_user {
+      color="#FEDF57"
+      fillcolor="#FEDF57"
+      label="Service Users"
+      style="dashed,filled"
+      BAZ
+      BAZ_MPA_FW
+      BAZ_MPA_LB
+  }
+
+  subgraph cluster_mesos {
+      color="#27C97B"
+      fillcolor="#27C97B"
+      label="Mesos Components"
+      style="dashed,filled"
+      MM_MA_FW
+      MM_MA_LB
+      MM
+      MA
+      MPA
+  }
+
+  # Edges
+  BAR -> BAR_FW_FW -> BAR_FW_LB -> FW
+
+  {FOO, FW, MM, MA, MPA} -> MM_MA_FW
+
+  MM_MA_FW -> MM_MA_LB -> {MM MA MPA}
+
+  MM -> MA:ma_5051 [dir="none", style="dotted"]
+  MM -> MPA:mpa_5051 [dir="none", style="dotted"]
+
+  MPA -> MA [dir="both", style="dashed"]
+
+  // MA -> MM:mm_2181
+  // MA -> MM:mm_5050
+  // MPA -> MM:mm_2181
+  // MPA -> MM:mm_5050
+
+  BAZ -> BAZ_MPA_FW -> BAZ_MPA_LB
+  BAZ_MPA_LB -> {MPA:mpa_80 MPA:mpa_443}
+
+  # Layout tweaks
+  {rank=same; FOO BAR BAZ}
+}
