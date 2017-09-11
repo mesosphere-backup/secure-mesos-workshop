@@ -13,8 +13,8 @@ participant CA_API as "Certificate Authority\nAPI"
 activate M
 M -> M: Generate RSA Keypair
 M -> M: Generate CSR
-activate CA_API
 M -> CA_API : Sign CSR
+activate CA_API
 CA_API -> CA_API : Validate Request
 alt Valid Request
     CA_API -> M : Signed Certificate
