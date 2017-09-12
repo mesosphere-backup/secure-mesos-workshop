@@ -4,6 +4,9 @@ set -e
 # This script starts a simple mesos cluster (1 master, 1 agent and 1 zookeeper)
 # using docker images.
 
+# Destroy any old clusters first.
+./destroy_clusters.sh
+
 # Start ZooKeeper via Exhibitor.
 docker run -d --net=host netflixoss/exhibitor:1.5.2
 

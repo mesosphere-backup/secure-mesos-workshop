@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xe
+set -e
 
 docker stop $(docker ps -aq)
 
