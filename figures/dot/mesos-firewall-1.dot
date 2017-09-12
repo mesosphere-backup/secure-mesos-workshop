@@ -23,7 +23,7 @@ digraph G {
   ]
 
   node [
-    color="#323a4e"
+    color="transparent"
     fillcolor="#9351e5:#ef468b"
     fontcolor="white"
     fontname="Source Sans Pro"
