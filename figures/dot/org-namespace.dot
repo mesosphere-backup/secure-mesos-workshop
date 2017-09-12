@@ -1,0 +1,218 @@
+// Mesosphere Colorscheme
+// MESOSPHERE_HELIOTROPE     #9351E5
+// MESOSPHERE_SPACE_GRAY     #323A4E
+// MESOSPHERE_MERCURY_PINK   #EF468B
+// MESOSPHERE_VENUS_YELLOW   #FEDF57
+// MESOSPHERE_EARTH_BLUE     #2F81F7
+// MESOSPHERE_MARS_RED       #FC4661
+// MESOSPHERE_JUPYTER_ORANGE #2F81F7
+// MESOSPHERE_SATURN_ORCHID  #C043D7
+// MESOSPHERE_URANUS_GREEN   #27C97B
+// MESOSPHERE_NEPTUNE_CYAN   #20D5FF
+
+digraph G {
+  graph [
+    bgcolor="transparent"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    label="Organization Namespace"
+    // nodesep="0.5"
+    // ranksep="0.75"
+    // rankdir="LR"
+    // splines=ortho
+  ]
+
+  node [
+    color="transparent"
+    fillcolor="#9351e5:#ef468b"
+    fontcolor="white"
+    fontname="Source Sans Pro"
+    shape="box"
+    style="rounded,filled"
+  ]
+
+  edge [
+    color="#323a4e"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    arrowhead="vee"
+    arrowtail="vee"
+  ]
+
+  # Nodes
+  ROOT [label="/"]
+
+  # Custom Nodes
+  DEV [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev"
+    style="dotted,filled"
+  ]
+
+  DEV_SALES [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/sales"
+    style="solid,filled"
+  ]
+
+  DEV_ENG [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/eng"
+    style="solid,filled"
+  ]
+
+  DEV_MKTNG [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/mktng"
+    style="solid,filled"
+  ]
+
+  DEV_SALES_APP [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/sales/app"
+    shape="plain"
+  ]
+
+  DEV_ENG_APP [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/eng/app"
+    shape="plain"
+  ]
+
+  DEV_MKTNG_APP [
+    color="#FC4661"
+    fillcolor="#FC4661"
+    label="/dev/mktng/app"
+    shape="plain"
+  ]
+
+  TEST [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test"
+    style="dotted,filled"
+  ]
+
+  TEST_SALES [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/sales"
+    style="solid,filled"
+  ]
+
+  TEST_ENG [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/eng"
+    style="solid,filled"
+  ]
+
+  TEST_MKTNG [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/mktng"
+    style="solid,filled"
+  ]
+
+  TEST_SALES_APP [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/sales/app"
+    shape="plain"
+  ]
+
+  TEST_ENG_APP [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/eng/app"
+    shape="plain"
+  ]
+
+  TEST_MKTNG_APP [
+    color="#2F81F7"
+    fillcolor="#2F81F7"
+    label="/test/mktng/app"
+    shape="plain"
+  ]
+
+  PROD [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod"
+    style="dotted,filled"
+    
+  ]
+
+  PROD_SALES [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/sales"
+    style="solid,filled"
+  ]
+
+  PROD_ENG [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/eng"
+    style="solid,filled"
+  ]
+
+  PROD_MKTNG [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/mktng"
+    style="solid,filled"
+  ]
+
+  PROD_SALES_APP [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/sales/app"
+    shape="plain"
+  ]
+
+  PROD_ENG_APP [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/eng/app"
+    shape="plain"
+  ]
+
+  PROD_MKTNG_APP [
+    color="#27C97B"
+    fillcolor="#27C97B"
+    label="/prod/mktng/app"
+    shape="plain"
+  ]
+
+  # Edges
+  ROOT -> {DEV, TEST, PROD}
+
+  DEV -> {DEV_SALES, DEV_ENG, DEV_MKTNG}
+  DEV_SALES -> DEV_SALES_APP
+  DEV_ENG -> DEV_ENG_APP
+  DEV_MKTNG -> DEV_MKTNG_APP
+
+  TEST -> {TEST_SALES, TEST_ENG, TEST_MKTNG}
+  TEST_SALES -> TEST_SALES_APP
+  TEST_ENG -> TEST_ENG_APP
+  TEST_MKTNG -> TEST_MKTNG_APP
+
+  PROD -> {PROD_SALES, PROD_ENG, PROD_MKTNG}
+  PROD_SALES -> PROD_SALES_APP
+  PROD_ENG -> PROD_ENG_APP
+  PROD_MKTNG -> PROD_MKTNG_APP
+
+  # Layout tweaks
+  // {rank=same; ROOT}
+  // {rank=same; DEV, TEST, PROD}
+  // {rank=same; DEV_SALES, DEV_ENG, DEV_MKTNG, 
+  //             TEST_SALES, TEST_ENG, TEST_MKTNG,
+  //             PROD_SALES, PROD_ENG, PROD_MKTNG}
+}
