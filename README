@@ -1,0 +1,46 @@
+- README: step-by-step exercises
+0. Unsecure
+  start exhibitor
+  start insecure master
+  start insecure agent
+  run insecure mesos-execute
+
+1. SSL
+  start SSL-enabled master
+  start agent without SSL, fails to connect
+  start agent with SSL, see that it connects
+  run insecure mesos-execute, fails to register
+  run secure mesos-execute sched, registers, but executor/task fails
+  run secure mesos-execute with task SSL env
+
+2. Agent authentication
+  start secure master, require agent authN
+SASL_PATH=/path/to/lib/sasl2
+MESOS_AUTHENTICATE_AGENTS={{ agent_authentication_required }}
+--credentials
+  start agent, fails to register
+  start agent with authN + credential
+MESOS_AUTHENTICATEE={{ custom_authenticatee }}
+MESOS_CREDENTIAL=file:///path/to/agent_principal.json
+- /path/to/agent_principal.json
+{ "principal": "mesos_agent" }  
+
+3. Fwk authentication
+MESOS_AUTHENTICATE_FRAMEWORKS={{ framework_authentication_required }}
+
+4. ACLs
+MESOS_AUTHORIZERS={{ mesos_master_authorizers }} // master
+MESOS_AUTHORIZER={{ mesos_agent_authorizer }} // agent
+--acls
+
+5. HTTP authentication
+MESOS_HTTP_AUTHENTICATORS={{ mesos_master_http_authenticators }}
+MESOS_AUTHENTICATE_HTTP_READWRITE={{ mesos_authenticate_http }}
+MESOS_AUTHENTICATE_HTTP_READONLY={{ mesos_authenticate_http }}
+
+** Notes/TODO
+- No LIBPROCESS_SSL_CA_DIR (cannot verify certs)
+- only kill docker images we create
+- Building custom authN/Z modules out of scope (lengthy compiles)
+- Secret generator/resolver out of scope
+- Firewall rules out of scope
