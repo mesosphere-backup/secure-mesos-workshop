@@ -1,0 +1,186 @@
+// Mesosphere Colorscheme
+// MESOSPHERE_HELIOTROPE     #9351E5
+// MESOSPHERE_SPACE_GRAY     #323A4E
+// MESOSPHERE_MERCURY_PINK   #EF468B
+// MESOSPHERE_VENUS_YELLOW   #FEDF57
+// MESOSPHERE_EARTH_BLUE     #2F81F7
+// MESOSPHERE_MARS_RED       #FC4661
+// MESOSPHERE_JUPYTER_ORANGE #2F81F7
+// MESOSPHERE_SATURN_ORCHID  #C043D7
+// MESOSPHERE_URANUS_GREEN   #27C97B
+// MESOSPHERE_NEPTUNE_CYAN   #20D5FF
+
+digraph G {
+  graph [
+    bgcolor="transparent"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    label="Mesos Service Gateway"
+    nodesep="0.5"
+    // ranksep="0.75"
+    rankdir="LR"
+    // splines=ortho
+  ]
+
+  node [
+    color="transparent"
+    fillcolor="#9351e5:#ef468b"
+    fontcolor="white"
+    fontname="Source Sans Pro"
+    shape="box"
+    style="rounded,filled"
+  ]
+
+  edge [
+    color="#323a4e"
+    fontcolor="#323a4e"
+    fontname="Source Sans Pro"
+    arrowhead="vee"
+    arrowtail="vee"
+  ]
+
+  # Nodes
+  UI
+  CLI
+  API
+
+  # Firewalls and Load Balancers
+  FW [
+    fillcolor="#FC4661"
+    label="-- Firewall --"
+    shape="plain"
+  ]
+
+  LB [
+    fillcolor="#2F81F7"
+    label="-- Load Balancer --"
+    shape="plain"
+  ]
+
+  # Structured Tables Nodes
+  AR_MM [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td>Service Gateway (Master)</td>
+        </tr>
+        <tr>
+          <td port="mesos">/mesos</td>
+        </tr>
+        <tr>
+          <td port="agent">/agent</td>
+        </tr>
+        <tr>
+          <td port="marathon">/service/marathon</td>
+        </tr>
+        <tr>
+          <td port="mesos_dns">/mesos_dns</td>
+        </tr>
+        <tr>
+          <td port="service_xyz">/service/xyz</td>
+        </tr>
+        <tr>
+          <td port="foo">/...</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  AR_MA [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td>Service Gateway (Agent)</td>
+        </tr>
+        <tr>
+          <td port="mesos">/mesos</td>
+        </tr>
+        <tr>
+          <td port="logs">/logs</td>
+        </tr>
+        <tr>
+          <td port="metrics">/metrics</td>
+        </tr>
+        <tr>
+          <td port="service_xyz">/service/xyz</td>
+        </tr>
+        <tr>
+          <td port="foo">/...</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  MM [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td>Master(s)</td>
+        </tr>
+        <tr>
+          <td port="mm_5050">5050</td>
+        </tr>
+        <tr>
+          <td port="mm_8443">8443</td>
+        </tr>
+        <tr>
+          <td port="mm_61053">61053</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  MA [
+    shape=plain
+    label=<
+      <table bgcolor="#9351e5:#ef468b" border="0" cellspacing="0" cellborder="1" color="#323a4e">
+        <tr>
+          <td>Private Agent(s)</td>
+        </tr>
+        <tr>
+          <td port="ma_5051">5051</td>
+        </tr>
+        <tr>
+          <td port="ma_xyz">&lt;service_xyz:port&gt;</td>
+        </tr>
+      </table>
+    >
+  ]
+
+  # Clusters
+  subgraph cluster_mesos_master {
+      color="#27C97B"
+      fillcolor="#27C97B"
+      label="Mesos Master(s)"
+      style="dashed,filled"
+      AR_MM
+      MM
+  }
+
+  subgraph cluster_mesos_agent {
+      color="#20D5FF"
+      fillcolor="#20D5FF"
+      label="Mesos Agent(s)"
+      style="dashed,filled"
+      AR_MA
+      MA
+  }
+
+  # Edges
+  {UI, CLI, API} -> FW -> LB -> AR_MM
+  AR_MM:agent -> AR_MA
+  AR_MM:service_xyz -> AR_MA
+
+  AR_MM:mesos -> MM:mm_5050
+  AR_MM:marathon -> MM:mm_8443
+  AR_MM:mesos_dns -> MM:mm_61053
+
+  AR_MA:mesos -> MA:ma_5051
+  AR_MA:service_xyz -> MA:ma_xyz
+
+  # Layout tweaks
+  {rank=same; UI CLI API}
+}
