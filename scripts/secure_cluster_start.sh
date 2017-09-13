@@ -18,7 +18,6 @@ docker run -d --net=host netflixoss/exhibitor:1.5.2
 # Note that LIBPROCESS_SSL_REQUIRE_CERT cannot verify certs without LIBPROCESS_SSL_CA_DIR.
 docker run -d --net=host \
   -e LIBPROCESS_SSL_ENABLED=1 \
-  -e LIBPROCESS_SSL_SUPPORT_DOWNGRADE=0 \
   -e LIBPROCESS_SSL_CERT_FILE=/etc/ssl/cert.pem \
   -e LIBPROCESS_SSL_KEY_FILE=/etc/ssl/key.pem \
   -e MESOS_PORT=5050 \
@@ -35,7 +34,6 @@ docker run -d --net=host \
 # Start Mesos agent.
 docker run -d --net=host --privileged \
   -e LIBPROCESS_SSL_ENABLED=1 \
-  -e LIBPROCESS_SSL_SUPPORT_DOWNGRADE=0 \
   -e LIBPROCESS_SSL_CERT_FILE=/etc/ssl/cert.pem \
   -e LIBPROCESS_SSL_KEY_FILE=/etc/ssl/key.pem \
   -e MESOS_PORT=5051 \

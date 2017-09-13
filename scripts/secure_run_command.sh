@@ -4,7 +4,6 @@ set -e
 
 docker run --net=host \
   -e LIBPROCESS_SSL_ENABLED=1 \
-  -e LIBPROCESS_SSL_SUPPORT_DOWNGRADE=0 \
   -e LIBPROCESS_SSL_CERT_FILE=/etc/ssl/cert.pem \
   -e LIBPROCESS_SSL_KEY_FILE=/etc/ssl/key.pem \
   -v "$(pwd)/ssl:/etc/ssl" \

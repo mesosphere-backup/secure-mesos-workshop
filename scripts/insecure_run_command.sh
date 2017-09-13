@@ -7,4 +7,4 @@ docker run --net=host \
   mesos-execute \
     --master=zk://127.0.0.1:2181/mesos \
     --name=foo \
-    --command=ls
+    --command=env
