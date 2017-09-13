@@ -14,6 +14,8 @@ docker run -d --net=host netflixoss/exhibitor:1.5.2
 ./generate_ssl_key_cert.sh
 
 # Start Mesos master.
+# Note that LIBPROCESS_SSL_SUPPORT_DOWNGRADE defaults to false/0.
+# Note that LIBPROCESS_SSL_REQUIRE_CERT cannot verify certs without LIBPROCESS_SSL_CA_DIR.
 docker run -d --net=host \
   -e LIBPROCESS_SSL_ENABLED=1 \
   -e LIBPROCESS_SSL_SUPPORT_DOWNGRADE=0 \
