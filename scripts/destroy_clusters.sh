@@ -4,4 +4,8 @@ set -e
 
 docker stop $(docker ps -aq)
 
-rm -rf log tmp ssl
+if [ `uname` = "Linux" ]; then
+  sudo rm -rf log tmp ssl
+else
+  rm -rf log tmp ssl
+fi
