@@ -31,7 +31,7 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
      message: 'Command exited with status 0'
    ```
 
-1. [Encryption](https://mesos.apache.org/documentation/latest/ssl/) required
+1. [Encryption](https://mesos.apache.org/documentation/latest/ssl/)
 
    - Now let's modify the cluster_start script to encrypt master communications:
      - Generate an SSL keypair (script provided)
@@ -78,17 +78,48 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
      message: 'Command exited with status 0'
    ```
 
-1. Agent authentication
+1. Agent [authentication](https://mesos.apache.org/documentation/latest/authentication/)
 
-   - start secure master, require agent authN
-     MESOS_AUTHENTICATE_AGENTS={{ agent_authentication_required }}
-     MESOS_CREDENTIALS
-   - start agent, fails to register
-   - start agent with authN + credential
-     MESOS_CREDENTIAL=file:///path/to/agent_principal.json
+   - Modify `cluster_start.sh` to configure the allowed credentials.
+   ```
+   MESOS_CREDENTIALS="file:///etc/credentials/credentials.json"
+   ```
+   Mount the prepopulated credentials file (modify it if you like) into the `mesos-master` container.
+   ```
+   -v "$(pwd)/credentials:/etc/credentials"
+   ```
+   And require agent authentication on the master.
+   ```
+   MESOS_AUTHENTICATE_AGENTS=1
+   ```
+   - Now if you run `cluster_start.sh`, the master will start successfully, but the agent will be unable to authenticate (debug in the agent log).
+   ```
+   I0914 17:53:56.134305    14 slave.cpp:971] New master detected at master@127.0.0.1:5050
+   I0914 17:53:56.134320    14 slave.cpp:995] No credentials provided. Attempting to register without authentication
+   I0914 17:53:56.954161    10 slave.cpp:885] Agent asked to shut down by master@127.0.0.1:5050 because 'Agent is not authenticated'
+   ```
+   - Now modify `cluster_start.sh` to configure the agent to load its authentication credential.
+   ```
+   MESOS_CREDENTIAL="file:///etc/credentials/credential.json"
+   ```
+   The `mesos-agent` container will also need to mount the credentials directory.
+   ```
+   -v "$(pwd)/credentials:/etc/credentials"
+   ```
+   - Now when you run `cluster_start.sh`, the agent will successfully authenticate and register.
+   ```
+	 I0914 slave.cpp:971] New master detected at master@127.0.0.1:5050
+	 I0914 slave.cpp:1033] Authenticating with master master@127.0.0.1:5050
+	 I0914 slave.cpp:1044] Using default CRAM-MD5 authenticatee
+	 I0914 slave.cpp:1128] Successfully authenticated with master master@127.0.0.1:5050
+	 I0914 slave.cpp:1174] Registered with master master@127.0.0.1:5050; given agent ID 792cd31b-18ee-4fb6-aef1-01d998e691aa-S0
+   ```
 
-1. Framework authentication
+1. Framework [authentication](https://mesos.apache.org/documentation/latest/authentication/)
    - MESOS_AUTHENTICATE_FRAMEWORKS={{ framework_authentication_required }}
+   https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L311-L317
+   https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L1126-L1135
+
 
 <!---
 1. Authorization
