@@ -16,4 +16,6 @@ docker run --net=host \
             \"LIBPROCESS_SSL_CERT_FILE\":\"/etc/ssl/cert.pem\",
             \"LIBPROCESS_SSL_KEY_FILE\":\"/etc/ssl/key.pem\"
            }" \
+    --principal=scheduler-principal \
+    --secret=scheduler-secret \
     --command=env
