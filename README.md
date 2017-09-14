@@ -116,9 +116,26 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
    ```
 
 1. Framework [authentication](https://mesos.apache.org/documentation/latest/authentication/)
-   - MESOS_AUTHENTICATE_FRAMEWORKS={{ framework_authentication_required }}
-   https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L311-L317
-   https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L1126-L1135
+   - The master is already configured with allowed credentials (applies to agent, framework, and HTTP authentication), so all that's left is to require framework authentication on the master. Let's enable this for both v0 and v1 (HTTP) frameworks. V1 also requires us to select an authenticator, so we'll use the default `basic` authenticator. Other authenticators may be loaded via Mesos modules.
+   ```
+   MESOS_AUTHENTICATE_FRAMEWORKS=1
+   MESOS_AUTHENTICATE_HTTP_FRAMEWORKS=1
+   MESOS_HTTP_FRAMEWORK_AUTHENTICATORS=basic
+   ```
+   - Now if you run `cluster_start.sh` and view the master log, you will notice that agent, framework, and http framework authentication are all required.
+   ```
+   I0914 master.cpp:494] Master only allowing authenticated frameworks to register
+   I0914 master.cpp:508] Master only allowing authenticated agents to register
+   I0914 master.cpp:521] Master only allowing authenticated HTTP frameworks to register
+   I0914 credentials.hpp:37] Loading credentials for authentication from '/etc/credentials/credentials.json'
+   ```
+   - If you try `run_command.sh` without authentication, you will see it fail to subscribe.
+   ```
+   I0914 19:34:11.941700    14 scheduler.cpp:470] New master detected at master@127.0.0.1:5050
+   E0914 19:34:12.210691     9 execute.cpp:666] EXIT with status 1: Received an ERROR event: Received unexpected '401 Unauthorized' () for SUBSCRIBE
+   ```
+   - To enable authentication in `mesos-execute`, you need to set the `--principal` and `--secret` flags as described in https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L311-L317
+   - For your own frameworks, make sure that you're setting `FrameworkInfo.principal` and passing the credential (principal + secret) on to the MesosSchedulerDriver (v0) or as part of the Subscribe message (v1). See the source for `mesos-execute` for an example: https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L1126-L1135
 
 
 <!---
@@ -136,12 +153,12 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
    ```
 --->
 
-## Notes/TODO
+## TODO
 - TODO: Explain how to get to the webui, including agent UI for sandbox access
 - TODO: only kill docker images we create
-- No LIBPROCESS_SSL_CA_DIR (cannot verify certs)
 
 ## Out of scope:
+- No Certificate authority (LIBPROCESS_SSL_CA_DIR) signing the certs, so we cannot verify them.
 - Building custom authN/Z modules (lengthy compiles)
 - Secret generator/resolver
 - Firewall rules (disabling endpoints)
