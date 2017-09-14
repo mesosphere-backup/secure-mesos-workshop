@@ -15,7 +15,8 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
 
 0. Default configuration (insecure)
 
-   - Start the basic cluster, with exhibitor/ZK, mesos-master, and mesos-agent.
+   - Start the basic cluster, with exhibitor/ZK, mesos-master, and mesos-agent.  
+   NOTE: The `cluster_start.sh` scripts will kill ALL docker containers on your machine. If you're running other docker containers, please tweak the `destroy_clusters.sh` script.
    ```
    cd scripts
    ./insecure_cluster_start.sh
