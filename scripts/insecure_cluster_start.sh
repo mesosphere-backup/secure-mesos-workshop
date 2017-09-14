@@ -12,6 +12,7 @@ docker run -d --net=host netflixoss/exhibitor:1.5.2
 
 # Start Mesos master.
 docker run -d --net=host \
+  -e LIBPROCESS_IP=127.0.0.1 \
   -e MESOS_PORT=5050 \
   -e MESOS_ZK=zk://127.0.0.1:2181/mesos \
   -e MESOS_QUORUM=1 \
@@ -24,6 +25,7 @@ docker run -d --net=host \
 
 # Start Mesos agent.
 docker run -d --net=host --privileged \
+  -e LIBPROCESS_IP=127.0.0.1 \
   -e MESOS_PORT=5051 \
   -e MESOS_MASTER=zk://127.0.0.1:2181/mesos \
   -e MESOS_SWITCH_USER=0 \
