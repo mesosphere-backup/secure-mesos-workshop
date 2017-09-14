@@ -3,6 +3,7 @@
 In these exercises, we will walk you through launching a Mesos master and agent, as well as an example framework (mesos-execute), under different security configurations, starting with the default insecure config and enabling each security feature as we go.
 
 ## Exercises
+
 0. Default (insecure)
 
    - start exhibitor
@@ -20,7 +21,7 @@ In these exercises, we will walk you through launching a Mesos master and agent,
    - run secure mesos-execute sched, registers, but executor/task fails
    - run secure mesos-execute with task SSL env
   
-2. Agent authentication
+1. Agent authentication
 
    - start secure master, require agent authN
      MESOS_AUTHENTICATE_AGENTS={{ agent_authentication_required }}
@@ -29,16 +30,16 @@ In these exercises, we will walk you through launching a Mesos master and agent,
    - start agent with authN + credential
      MESOS_CREDENTIAL=file:///path/to/agent_principal.json
     
-3. Fwk authentication
+1. Fwk authentication
    - MESOS_AUTHENTICATE_FRAMEWORKS={{ framework_authentication_required }}
 
-4. ACLs
+1. ACLs
 
    ```
    MESOS_ACLS
    ```
 
-5. HTTP authentication
+1. HTTP authentication
 
    ```
    MESOS_AUTHENTICATE_HTTP_READWRITE={{ mesos_authenticate_http }}
@@ -46,7 +47,7 @@ In these exercises, we will walk you through launching a Mesos master and agent,
    ```
 
 ## Notes/TODO
-- only kill docker images we create
+- TODO: only kill docker images we create
 - No LIBPROCESS_SSL_CA_DIR (cannot verify certs)
 
 ## Out of scope:
