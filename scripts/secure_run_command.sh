@@ -13,7 +13,6 @@ docker run --net=host \
     --name=foo \
     --env="{
             \"LIBPROCESS_SSL_ENABLED\":\"1\",
-            \"LIBPROCESS_SSL_SUPPORT_DOWNGRADE\":\"0\",
             \"LIBPROCESS_SSL_CERT_FILE\":\"/etc/ssl/cert.pem\",
             \"LIBPROCESS_SSL_KEY_FILE\":\"/etc/ssl/key.pem\"
            }" \
