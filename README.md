@@ -65,7 +65,8 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
      message: 'Executor terminated'
      source: SOURCE_AGENT
      reason: REASON_EXECUTOR_TERMINATED
-  ```
+   ```
+
    - To fix this, you must also add the LIBPROCESS_SSL variables to the `--env` parameter for the `mesos-execute` command. 
    Since `mesos-execute` runs the command directly (wrapped in a cgroup container, but without a docker container or dedicated filesystem image), you don't need to mount the keypair directory.
    Run the `run_command.sh` script again, and see that the scheduler subscribes, and now the task finishes successfully (exit code `0`).
