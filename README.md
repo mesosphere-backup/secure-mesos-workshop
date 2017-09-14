@@ -94,9 +94,9 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
    ```
    - Now if you run `cluster_start.sh`, the master will start successfully, but the agent will be unable to authenticate (debug in the agent log).
    ```
-   I0914 17:53:56.134305    14 slave.cpp:971] New master detected at master@127.0.0.1:5050
-   I0914 17:53:56.134320    14 slave.cpp:995] No credentials provided. Attempting to register without authentication
-   I0914 17:53:56.954161    10 slave.cpp:885] Agent asked to shut down by master@127.0.0.1:5050 because 'Agent is not authenticated'
+   I0914 slave.cpp:971] New master detected at master@127.0.0.1:5050
+   I0914 slave.cpp:995] No credentials provided. Attempting to register without authentication
+   I0914 slave.cpp:885] Agent asked to shut down by master@127.0.0.1:5050 because 'Agent is not authenticated'
    ```
    - Now modify `cluster_start.sh` to configure the agent to load its authentication credential.
    ```
@@ -138,20 +138,18 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
    - For your own frameworks, make sure that you're setting `FrameworkInfo.principal` and passing the credential (principal + secret) on to the MesosSchedulerDriver (v0) or as part of the Subscribe message (v1). See the source for `mesos-execute` for an example: https://github.com/apache/mesos/blob/1.4.0-rc5/src/cli/execute.cpp#L1126-L1135
 
 
-<!---
-1. Authorization
+1. [Authorization](https://mesos.apache.org/documentation/latest/authorization/)
 
    ```
-   MESOS_ACLS
+   MESOS_ACLS=...
    ```
 
 1. HTTP authentication
 
    ```
-   MESOS_AUTHENTICATE_HTTP_READWRITE={{ mesos_authenticate_http }}
-   MESOS_AUTHENTICATE_HTTP_READONLY={{ mesos_authenticate_http }}
+   MESOS_AUTHENTICATE_HTTP_READWRITE=true
+   MESOS_AUTHENTICATE_HTTP_READONLY=true
    ```
---->
 
 ## TODO
 - TODO: Explain how to get to the webui, including agent UI for sandbox access
