@@ -23,11 +23,11 @@ docker pull mesosphere/mesos-slave:1.4.0-rc5
    - Run insecure mesos-execute using `./insecure_run_command.sh`
    - Verify that mesos-execute subscribed, ran and finished successfully.
    ```
-Subscribed with ID 01a2c4f7-3059-41b6-958e-cc8f1787b60c-0002
-Submitted task 'foo' to agent '01a2c4f7-3059-41b6-958e-cc8f1787b60c-S0'
-Received status update TASK_RUNNING for task 'foo'
-Received status update TASK_FINISHED for task 'foo'
-  message: 'Command exited with status 0'
+   Subscribed with ID 01a2c4f7-3059-41b6-958e-cc8f1787b60c-0002
+   Submitted task 'foo' to agent '01a2c4f7-3059-41b6-958e-cc8f1787b60c-S0'
+   Received status update TASK_RUNNING for task 'foo'
+   Received status update TASK_FINISHED for task 'foo'
+     message: 'Command exited with status 0'
    ```
 
 1. Encryption required
